@@ -52,14 +52,16 @@ public class PersistanceTransactionDao implements TransactionDAO,Serializable{
 
     @Override
     public List<Transaction> getPaginatedTransactionLogs(int limit) {
-        Cursor c = database.rawQuery("SELECT Account_no,Type,Date_Entered,Amount FROM TRANSACTION_DATA limit " + limit,null);
+        Cursor c = database.rawQuery("SELECT Account_no,Type,Date_Entered,Amount FROM TRANSACTION_DATA order by Id desc limit " + limit,null);
         List<Transaction> transactions = new ArrayList<Transaction>();
-
-        if(c.moveToFirst()) {
+        /*InMemoryTransactionDemo this method is implemente as sublist(size-limit,size) hence we take the last transactions.\
+        Hence data is ordered in decreasing order by id. Then take the limit. Again it is re-ordered in the method below
+        * */
+        if(c.moveToLast()) {
             do {
                 Transaction t = new Transaction(new Date(c.getLong(2)),c.getString(0),c.getLong(1)==0?ExpenseType.EXPENSE:ExpenseType.INCOME,c.getDouble(3));
                 transactions.add(t);
-            } while (c.moveToNext());
+            } while (c.moveToPrevious());
         }
 
         return transactions;

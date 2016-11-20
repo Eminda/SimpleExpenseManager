@@ -33,7 +33,7 @@ public class PersistanceExpenseManager extends ExpenseManager implements Seriali
 
 
         database.execSQL("CREATE TABLE IF NOT EXISTS TRANSACTION_DATA(" +
-                "id INTEGER PRIMARY KEY autoincrement," +
+                "Id INTEGER PRIMARY KEY autoincrement," +
                 "Account_no VARCHAR," +
                 "Type int," +
                 "Date_Entered int,"+
